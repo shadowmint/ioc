@@ -1,7 +1,7 @@
 package ioc 
 
 import "reflect"
-import "fmt"
+// import "fmt"
 
 type Binding struct {
   Type reflect.Type
@@ -89,11 +89,11 @@ func (self *Container) Resolve(target interface{}) error {
     field := t.Field(i)
     if field.Type.Kind() == reflect.Interface {
 
-      fmt.Printf("Located field %s\n", field.Name)
+      // fmt.Printf("Located field %s\n", field.Name)
       value := v.Field(i)
       if value.IsNil() {
 
-        fmt.Printf("Located nil field value! %s\n", field.Name)
+        // fmt.Printf("Located nil field value! %s\n", field.Name)
         record, found := self.items[field.Type]
         if !found {
           return fail("Unable to resolve property, no binding for '%s' on type '%s'", field.Type.Name(), t.Name())
@@ -109,8 +109,8 @@ func (self *Container) Resolve(target interface{}) error {
           }
 
           // Bind the instance to the record, if we can~
-          fmt.Printf("Attempting to bind instance %+v\n", record.Instance)
-          fmt.Printf("... to object %s property %s of type %+v\n", t.Name(), field.Name, field.Type)
+          // fmt.Printf("Attempting to bind instance %+v\n", record.Instance)
+          // fmt.Printf("... to object %s property %s of type %+v\n", t.Name(), field.Name, field.Type)
           value.Set(record.Instance)
         }
       }

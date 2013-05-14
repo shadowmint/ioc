@@ -71,7 +71,6 @@ func Test_GivenInstance_WithInvalidRegister_ResolveFails(t *testing.T) {
   if err == nil {
     t.Error("Did not fail to resolve service as required")
   }
-  print(err.Error())
 }
 
 func Test_CanDirectlyResolveInterface(t *testing.T) {
