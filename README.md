@@ -1,5 +1,4 @@
-DI & IOC in GO
-==
+### Dependency injection and IOC in go
 
 Honestly, is there really a need for this?
 
@@ -10,8 +9,7 @@ This is a simple module to provide a 'go like' IOC container, based on the
 AutoFac property injection framework.
 
 
-Usage
---
+#### Usage
 
 First, you create a container and bind interfaces to implementation structs.
 
@@ -60,11 +58,13 @@ Or, if your type comes from another package with a constructor:
     c.Resolve(x)
 
 See the tests; resolution is recursive. Ie. If property X requires a Y, then Y is 
-created and resolved automatically.
+created and resolved automatically. 
+
+Note that only *interface* values are resolved this way, because resolving a concrete
+type doesn't make any sense.
 
 
-Direct Usage
---
+#### Direct Usage
 
 You can directly resolve interfaces using the .Interface() call on the IOC container,
 like this:
@@ -75,18 +75,17 @@ It's almost always not worth doing this, because it involves having to do additi
 type assertions and assign the instance to a location manually.
 
 
-FAQ
---
+#### FAQ
 
-1) Can I resolve non-interfaces types?
+##### 1) Can I resolve non-interfaces types?
 
 No.
 
-2) Can I get into a dangerous circular dependency chain with this?
+##### 2) Can I get into a dangerous circular dependency chain with this?
 
 Yes. 
 
-3) Should I even use this at all?
+##### 3) Should I even use this at all?
 
 That's a more complicated question; it's useful in some circumstances, for example,
 injecting a singleton of a database service into all your web controller types.
@@ -97,3 +96,20 @@ That doesn't mean you shouldn't use DI just because you're using go.
 
 Just make sure that if you are using it, you're doing it because there's some
 benefit in doing so, not just because 'that's what you do'.
+
+##### 4) Why this instead of constructor DI?
+
+Go doesn't have a way to dynamically reflect over a function call, find the 
+arguments and then invoke the function with them. 
+
+It's also awkward, because you're messing with the go-like syntax of 
+
+    x := ValueItem{}
+
+...and forcing all types to have constructors. It's just not a great fit.
+
+##### 5) XML config files?
+
+This isn't possible in go. Types must be registered at compile time. If you
+want to do magical multiple-type binding and run-time xml configuration files,
+do it in your own time.
